@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/VisualStudio/TeamArchitect/ComponentDesigner"
+  dslVersion="1.0.0.0"
+  Id="7f7eefa8-6c99-4d53-8ae2-5ed9a9ba2c6f"
+  name="WebDB.Documentation.Modeling" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
+  <profileInstances>
+    <packageHasProfileInstances
+      Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b">
+      <profileInstance
+        Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791"
+        name="StandardProfileL2" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances
+      Id="29349502-908c-4fda-9054-c48619c59ed0">
+      <profileInstance
+        Id="532ea607-fb19-44b8-8502-3351b05452be"
+        name="StandardProfileL3" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <packageHasNamedElement>
+      <component
+        Id="22a14a23-804f-4bfd-b14a-db50031a65e0"
+        name="DBEntityRoot"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <dependency
+            Id="fc6522be-6b22-427b-8ab0-0f5c4b51c468">
+            <componentMoniker
+              Id="a4aca87c-bc5f-48cc-81f5-235de0e49afd"
+              LastKnownName="QueryTypeSwitcher"
+              LastKnownLocation="WebDB.Documentation.Modeling.uml" />
+          </dependency>
+        </suppliersInternal>
+      </component>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <component
+        Id="de64f34d-d386-43e1-8e76-25c05f3819ff"
+        name="GenericDBQueryActor"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <component
+        Id="a4aca87c-bc5f-48cc-81f5-235de0e49afd"
+        name="QueryTypeSwitcher"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <dependency
+            Id="fd9984b8-7d97-47e1-a07b-4f64ee712595">
+            <componentMoniker
+              Id="767d65ae-7d5d-4959-8dde-8423472d21b3"
+              LastKnownName="GenericSelector"
+              LastKnownLocation="WebDB.Documentation.Modeling.uml" />
+          </dependency>
+          <dependency
+            Id="721307be-564d-422e-9dce-60c3d0d72151">
+            <componentMoniker
+              Id="62faf7ca-edcc-46d4-b30d-6a8b95aa0436"
+              LastKnownName="GenericAdder"
+              LastKnownLocation="WebDB.Documentation.Modeling.uml" />
+          </dependency>
+        </suppliersInternal>
+      </component>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <component
+        Id="767d65ae-7d5d-4959-8dde-8423472d21b3"
+        name="GenericSelector"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <dependency
+            Id="b5e01d97-368c-4b75-b304-fb29171066da">
+            <componentMoniker
+              Id="de64f34d-d386-43e1-8e76-25c05f3819ff"
+              LastKnownName="GenericDBQueryActor"
+              LastKnownLocation="WebDB.Documentation.Modeling.uml" />
+          </dependency>
+        </suppliersInternal>
+      </component>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <component
+        Id="62faf7ca-edcc-46d4-b30d-6a8b95aa0436"
+        name="GenericAdder"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <dependency
+            Id="7d299116-b71f-4a33-94db-7eda7d8dc58e">
+            <componentMoniker
+              Id="e2a81337-bec2-44dc-adcd-d819509e0f6f"
+              LastKnownName="GenericDbAdderActor"
+              LastKnownLocation="WebDB.Documentation.Modeling.uml" />
+          </dependency>
+        </suppliersInternal>
+      </component>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <component
+        Id="e2a81337-bec2-44dc-adcd-d819509e0f6f"
+        name="GenericDbAdderActor"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+  </packagedElements>
+  <primitiveType
+    Id="220a3521-e091-4221-bae9-3ef9018e845c"
+    name="Integer"
+    isAbstract="false"
+    isLeaf="false" />
+  <primitiveType
+    Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+    name="Boolean"
+    isAbstract="false"
+    isLeaf="false" />
+  <primitiveType
+    Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+    name="String"
+    isAbstract="false"
+    isLeaf="false" />
+  <primitiveType
+    Id="3ab42e7d-4969-445a-b209-471f5cb8209c"
+    name="UnlimitedNatural"
+    isAbstract="false"
+    isLeaf="false" />
+</modelStoreModel>

@@ -1,0 +1,9 @@
+Consider skipping the webapi layer and doing a direct connection 
+between the prism client and the server.  Could avoid serialization
+and improve performance and simplicity.
+- Also check if entities from ef can serialize across as akka messages.  if so
+this gets very simplified as we don't need model objects anymore.
+(they should be able to if the dynamic/lazy option is off in the config,
+that may also eliminate the need for model objects with webapi.)
+
+Find a better way to show relationships in prism where I don't need to duplicate data & manage so much on the server side.
