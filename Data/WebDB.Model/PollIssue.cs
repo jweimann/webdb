@@ -2,7 +2,7 @@ namespace WebDB.Model
 {
     public partial class PollIssue : ModelObjectBase
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
 
         public int PollId { get; set; }
 

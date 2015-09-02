@@ -46,8 +46,10 @@
     <Compile Include="GetEntityTypesResponse.cs" />
     <Compile Include="IEntityRequest.cs" />
     <Compile Include="IHaveEntityType.cs" />
+    <Compile Include="NotifySubscribersOfEntityChange.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AkkaSearchResults.cs" />
+    <Compile Include="SubscribeToEntityChanged.cs" />
     <Compile Include="UndoRequest.cs" />
     <Compile Include="UpdateEntityRequest.cs" />
   </ItemGroup>

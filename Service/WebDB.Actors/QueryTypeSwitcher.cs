@@ -9,17 +9,20 @@ namespace WebDB.Actors
         private readonly IActorRef _genericAdder;
         private readonly IActorRef _genericUpdater;
         private readonly IActorRef _entityTypes;
+        private readonly IActorRef _clientViewProviderActor;
 
         public QueryTypeSwitcher()
         {
-            _genericSelector = Context.ActorOf<GenericSelector>("GenericSelector");
+            //_genericSelector = Context.ActorOf<GenericSelector>("GenericSelector"); // Moving this to client view
             _genericAdder = Context.ActorOf<GenericAdder>("GenericAdder");
             _genericUpdater = Context.ActorOf<GenericUpdater>("GenericUpdater");
-            _entityTypes = Context.ActorOf<EntityTypes>("EntityTypes");
+            _entityTypes = Context.ActorOf<EntityTypesActor>("EntityTypes");
+            _clientViewProviderActor = Context.ActorOf<ClientViewProviderActor>("ClientViewProviderActor");
 
             Receive<GetAllRequest>(message =>
             {
-                _genericSelector.Tell(message, Sender);
+                _clientViewProviderActor.Tell(message, Sender);
+                //_genericSelector.Tell(message, Sender);
             });
 
             Receive<AddEntityRequest>(message =>

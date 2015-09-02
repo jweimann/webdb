@@ -7,3 +7,10 @@ this gets very simplified as we don't need model objects anymore.
 that may also eliminate the need for model objects with webapi.)
 
 Find a better way to show relationships in prism where I don't need to duplicate data & manage so much on the server side.
+
+Complete the ClientViewActor and ClientViewProviderActor
+I think this will require an actor per DB table where the views can subscribe to an ID on the actor.
+The actor will get a message whenever an entity is updated with the ID of the updated entity.
+It will then message all views subscribed to that ID so the client can be notified that their data is dirty.
+
+ private void FillEntityTypes() - this has ModelObject<> (looks like a generic) but shouldn't because it doesn't exist and should be abstract if it did..

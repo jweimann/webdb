@@ -9,6 +9,7 @@ using WebDB.Model;
 using System.Data.Entity;
 using AutoMapper;
 
+
 namespace WebDB.Actors
 {
     public class GenericDBQueryActor : ReceiveActor
@@ -30,10 +31,13 @@ namespace WebDB.Actors
                         return;
                     }
 
+                    var method = typeof(WebDbPoliticsModel).GetMethod("Set", new Type[0]).MakeGenericMethod(type);
+                    var set = method.Invoke(model, new object[0]);
+                    DbSet<Position> dbSet = set as DbSet<Position>;
+                    
+                    //DbSet<IModelObject> set = model.Set(type).Cast<IModelObject>();//.Include("PollIssues");
 
-                    var set = model.Set(type);//.Include("PollIssues");
-
-                    var relationshipProperties = type.GetProperties()
+                    var relationshipCollectionProperties = type.GetProperties()
                   .Where(t =>
                           t.Name != "Relationships" &&
                           t.GetGetMethod().IsVirtual &&
@@ -41,22 +45,38 @@ namespace WebDB.Actors
                           t.PropertyType.GetGenericTypeDefinition() == typeof(ICollection<>))
                   .ToList();
 
-                    var query = set.AsQueryable();
+                    var query = dbSet.AsQueryable();
 
-                    foreach (var relatedProperty in relationshipProperties)
+                    foreach (var relatedProperty in relationshipCollectionProperties)
                     {
                         query = query.Include(relatedProperty.Name);
                     }
                     ///set.AsQueryable().
 
+                    var relationshipSingleProperties = type.GetProperties()
+                                            .Where(t => t.GetGetMethod().IsVirtual && 
+                                            t.PropertyType.IsGenericType == false &&
+                                            t.DeclaringType != typeof(ModelObjectBase))
+                                            .ToList();
 
-                    var result = query.AsNoTracking().ToListAsync().Result;
+                    foreach(var relatedProperty in relationshipSingleProperties)
+                    {
+                        query = query.Include(relatedProperty.Name);
+                    }
+                    
+                    if (!String.IsNullOrWhiteSpace(message.Filter))
+                    {
+                        query = query.Where(t => t.DesignerId.Contains(message.Filter));
+                    }
 
-                    //HandleDbResponse(result, type);
-                    Sender.Tell(new AkkaSearchResults(message.EntityType, result));
+                    var result = query.AsNoTracking().ToListAsync().Result;//.ConvertAll<object>();
+                    List<object> resultsAsObjectList = new List<object>();
+                    foreach (var r in result)
+                        result.Add(r);
+                    
+                    Sender.Tell(new AkkaSearchResults(message.EntityType, resultsAsObjectList));
 
-                    //Sender.Tell(new AkkaSearchResults(message.EntityType, new List<object>() { "string" }));
-
+                    
 
                 }
             });

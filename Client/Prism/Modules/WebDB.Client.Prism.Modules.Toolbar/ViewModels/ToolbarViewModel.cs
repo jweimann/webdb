@@ -43,7 +43,7 @@ namespace WebDB.Client.Prism.Modules.Toolbar.ViewModels
 
         private void Search()
         {
-            _eventAggregator.GetEvent<SearchEvent>().Publish(SelectedEntityType);
+            _eventAggregator.GetEvent<SearchEvent>().Publish(new Tuple<string, string>(SelectedEntityType, SearchText));
         }
 
         public IView View { get; set; }

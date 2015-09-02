@@ -14,10 +14,15 @@ namespace WebDB.Actors
     {
         
         private readonly IActorRef _queryTypeSwitcher;
+        private readonly IActorRef _entityChangeNotificationRootActor;
 
         public DBEntityRoot()
         {
             _queryTypeSwitcher = Context.ActorOf<QueryTypeSwitcher>("QueryTypeSwitcher");
+
+            Props props = Props.Create<EntityChangeNotificationRootActor>();
+            _entityChangeNotificationRootActor = Context.System.ActorOf<EntityChangeNotificationRootActor>("EntityChangeNotificationRootActor");
+
             string mypath = Self.Path.ToString();
             //Receive<GetAllRequest>(message => _queryTypeSwitcher.Tell(message, Sender));
 

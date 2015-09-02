@@ -9,7 +9,7 @@ namespace WebDB.Model
             PollIssues = new HashSet<PollIssue>();
         }
 
-        public int Id { get; set; }
+        //public int Id { get; set; }
 
         public int IssueId { get; set; }
 

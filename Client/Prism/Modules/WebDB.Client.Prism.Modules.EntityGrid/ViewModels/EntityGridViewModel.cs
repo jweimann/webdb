@@ -14,6 +14,7 @@ using WebDB.Client.Prism.Core;
 using WebDB.Client.Prism.Modules.EntityGrid.Views;
 using WebDB.Messages;
 using WebDB.Model;
+using WebDB.Common;
 
 namespace WebDB.Client.Prism.Modules.EntityGrid.ViewModels
 {
@@ -26,6 +27,7 @@ namespace WebDB.Client.Prism.Modules.EntityGrid.ViewModels
 
         public IModelObject SelectedItem { get; set; }// = "None";
         public ICommand SelectItemCommand { get; set; }
+        public ICommand OpenDetailsCommand { get; set; }
         public bool IsLoading { get; set; } = true;
 
         public EntityGridViewModel(IEntityGridView view, IEventAggregator eventAggregator)
@@ -43,6 +45,27 @@ namespace WebDB.Client.Prism.Modules.EntityGrid.ViewModels
             View.DataContext = this;
             SaveCommand = new DelegateCommand(Save, CanSave);
             SelectItemCommand = new DelegateCommand<object[]>(SelectItem);
+            OpenDetailsCommand = new DelegateCommand<object>(OpenDetails);
+
+            _eventAggregator.GetEvent<NotifySubscribersOfEntityChangeEvent>().Subscribe(HandleEntityChangedEvent);
+        }
+
+        private void OpenDetails(object obj)
+        {
+            
+        }
+
+        private void HandleEntityChangedEvent(NotifySubscribersOfEntityChange message)
+        {
+            var modifiedId = message.EntityId;
+            foreach(var item in Items)
+            {
+                ModelObjectBase modelObject = item as ModelObjectBase;
+                if (modelObject.Id == modifiedId)
+                {
+                    modelObject.IsChanged = true;
+                }
+            }
         }
 
         private void SelectItem(object[] items)
@@ -77,6 +100,18 @@ namespace WebDB.Client.Prism.Modules.EntityGrid.ViewModels
         public void SetItems(List<object> results)
         {
             Items = new ObservableCollection<object>(results);
+
+            //EntityGridView viewCast = (View as EntityGridView);
+
+            //List<Issue> issues = new List<Issue>();
+            //issues.AddRange(results.Cast<Issue>());
+            //viewCast.dataGridControl.ItemsSource = Items;
+            //viewCast.dataGridControl.ItemsSource = issues;// new List<Tuple<string, string>> { new Tuple<string, string>("C1", "C2") };
+
+            //viewCast.devDataGrid.ItemsSource = Items;
+            //foreach(var property in )
+            //viewCast.dataGridControl.Columns.Add(new Xceed.Wpf.DataGrid.Column(fieldName, displayMemberBinding))
+
             foreach (var itemUncast in Items)//.Cast<IModelObject>())
             {
                 IModelObject item = itemUncast as IModelObject;
@@ -84,6 +119,8 @@ namespace WebDB.Client.Prism.Modules.EntityGrid.ViewModels
                 var type = item.GetType();
 
                 var relationshipProperties = item.GetNavigationProperties();
+
+                
 
                 foreach (var relatedProperty in relationshipProperties)
                 {

@@ -11,6 +11,9 @@ namespace WebDB.Model
     [ImplementPropertyChanged]
     public abstract class ModelObjectBase : IModelObject, INotifyPropertyChanged
     {
+        public virtual int Id { get; private set; }
+        public virtual string DesignerId { get; private set; }
+
         [NotMapped]
         public bool IsChanged { get; set; } = false;
 

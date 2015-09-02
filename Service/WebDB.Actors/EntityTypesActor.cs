@@ -6,10 +6,10 @@ using System.Reflection;
 
 namespace WebDB.Actors
 {
-    internal class EntityTypes : ReceiveActor
+    public class EntityTypesActor : ReceiveActor
     {
         private List<string> _entityTypes;
-        public EntityTypes()
+        public EntityTypesActor()
         {
             FillEntityTypes();
 
@@ -23,9 +23,12 @@ namespace WebDB.Actors
         private void FillEntityTypes()
         {
             Assembly assembly = Assembly.GetAssembly(typeof(WebDB.Model.IModelObject));
-            _entityTypes = assembly.GetTypes()
+            var entityTypes = assembly.GetTypes()
                 .ToList()
-                .Where(t=> t.IsClass == true && t.IsAbstract == false)
+                .Where(t=> t.IsClass == true && t.IsAbstract == false && t.Name != "<>c")
+                .ToList();
+
+            _entityTypes = entityTypes
                 .Select(t => t.Name)
                 .ToList();
         }

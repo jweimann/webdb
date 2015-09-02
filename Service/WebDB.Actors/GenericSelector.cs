@@ -23,7 +23,8 @@ namespace WebDB.Actors
                     _dbQueryActors.Add(typeName, Context.ActorOf<GenericDBQueryActor>(typeName));
                 }
                 var path = _dbQueryActors[typeName];
-                path.Tell(new GetAllRequest(typeName), Sender);
+                path.Tell(message, Sender);
+                //path.Tell(new GetAllRequest(typeName), Sender);
             });
         }
     }

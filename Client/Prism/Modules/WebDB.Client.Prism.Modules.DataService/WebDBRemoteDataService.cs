@@ -28,7 +28,7 @@ namespace WebDB.Client.Prism.Modules.DataService
 
       
 
-        private async void HandleSearch(string searchText)
+        private async void HandleSearch(Tuple<string,string> searchText)
         {
             try
             {

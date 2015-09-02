@@ -20,8 +20,12 @@ namespace WebDB.Actors
         private object _modelObject;
         private object _dbModelObject;
         private Stack<object> _undoStack = new Stack<object>();
+        private readonly IActorRef _entityChangeNotificationActor;
+
         public GenericDBEntity(string entityType, long id)
         {
+            _entityChangeNotificationActor = Context.System.ActorSelection($"/user/EntityChangeNotificationRootActor/{entityType}").ResolveOne(TimeSpan.FromSeconds(1)).Result;
+
             var entityAssembly = Assembly.GetAssembly(typeof(IModelObject)); // Removed DTOs - ModelObject = ef entity
             var allEntityTypes = entityAssembly.GetTypes().ToList();
 
@@ -37,6 +41,7 @@ namespace WebDB.Actors
                 _modelObject = message.GetModelObject();
                 SaveModelObject();
                 Sender.Tell(_modelObject);
+                _entityChangeNotificationActor.Tell(new NotifySubscribersOfEntityChange(this.Id));
             });
 
             Receive<UndoRequest>(message =>

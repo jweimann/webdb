@@ -12,7 +12,7 @@ namespace WebDB.Client.Prism.Modules.AkkaDataService.Actors
     public class TickMessage { }
     public class DBClientActor : ReceiveActor
     {
-        string _lastMessage;
+        private Tuple<string, string> _lastMessage;
         private IUnityContainer _container;
         private ActorSelection _dbRootActor;
         private IEventAggregator _eventAggregator;
@@ -29,13 +29,19 @@ namespace WebDB.Client.Prism.Modules.AkkaDataService.Actors
             Context.System.Scheduler.ScheduleTellRepeatedly(0, 100, Self, new TickMessage(), Self);
 
             Receive<TickMessage>(message => HandleTick());
-            Receive<string>(message => HandleDoSearch(message));
+            Receive<Tuple<string, string>>((message) => HandleDoSearch(message.Item1, message.Item2));
             Receive<AkkaSearchResults>(message => HandleSearchResult(message));
             Receive<AkkaGetEntityTypesResponse>(message => HandleEntityTypesResponse(message));
             Receive<GetEntityTypes>(message => GetEntityTypesFromSystem());
+            Receive<NotifySubscribersOfEntityChange>(message => HandleNotifySubscribersOfEntityChanged(message));
 
             GetEntityTypesFromSystem();
             _self = Self;
+        }
+
+        private void HandleNotifySubscribersOfEntityChanged(NotifySubscribersOfEntityChange message)
+        {
+            _eventAggregator.GetEvent<NotifySubscribersOfEntityChangeEvent>().Publish(message);
         }
 
         protected override void PostStop()
@@ -72,7 +78,7 @@ namespace WebDB.Client.Prism.Modules.AkkaDataService.Actors
         {
             if (_lastMessage != null)
             {
-                _dbRootActor.Tell(new GetAllRequest(_lastMessage.ToString()));
+                _dbRootActor.Tell(new GetAllRequest(_lastMessage.Item1, _lastMessage.Item2));
                 _lastMessage = null;
                 _dbRootActor.Tell(new GetEntityTypes());
             }
@@ -83,16 +89,16 @@ namespace WebDB.Client.Prism.Modules.AkkaDataService.Actors
             }
         }
 
-        private void HandleDoSearch(string message)
+        private void HandleDoSearch(string message, string filter)
         {
             //Self.Tell(message);
-            _dbRootActor.Tell(new GetAllRequest(message));
+            _dbRootActor.Tell(new GetAllRequest(message, filter));
             
         }
 
         IActorRef _self;
 
-        private void HandleSearchEvent(string message)
+        private void HandleSearchEvent(Tuple<string, string> message)
         {
             _dbRootActor.Tell(message, _self);
             _lastMessage = message;

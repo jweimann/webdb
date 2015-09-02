@@ -81,8 +81,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientViewActor.cs" />
     <Compile Include="DBEntityRoot.cs" />
-    <Compile Include="EntityTypes.cs" />
+    <Compile Include="EntityChangeNotificationActor.cs" />
+    <Compile Include="EntityChangeNotificationRootActor.cs" />
+    <Compile Include="EntityTypesActor.cs" />
     <Compile Include="Extensions\EntityRequestExtensions.cs" />
     <Compile Include="GenericAdder.cs" />
     <Compile Include="GenericDBAdderActor.cs" />
@@ -93,6 +96,7 @@
     <Compile Include="GenericUpdater.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryTypeSwitcher.cs" />
+    <Compile Include="ClientViewProviderActor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

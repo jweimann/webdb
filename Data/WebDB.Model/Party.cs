@@ -11,7 +11,7 @@ namespace WebDB.Model
         {
             PollIssues = new List<PollIssue>();
         }
-        public int Id { get; set; }
+        //public override  int Id { get; set; }
         public string Name { get; set; }
         public virtual ICollection<PollIssue> PollIssues { get; set; }
     }
